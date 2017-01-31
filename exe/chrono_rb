@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'chrono_rb'
+ChronoRb::CLI.start
