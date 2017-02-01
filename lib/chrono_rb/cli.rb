@@ -5,7 +5,7 @@ module ChronoRb
 
     desc "start", "start chrono"
     def start
-      'ok'
+      puts 'ok'
     end
 
   end
