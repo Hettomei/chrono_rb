@@ -8,3 +8,23 @@ module ChronoRb
     warn(msg)
   end
 end
+
+RSpec.configure do |config|
+
+  def silence_stdout
+    original_stdout = $stdout
+    $stdout = File.open(File::NULL, "w")
+    yield
+  ensure
+    $stdout = original_stdout
+  end
+
+  def silence_sterr
+    original= $stderr
+    $stderr = File.open(File::NULL, "w")
+    yield
+  ensure
+    $stderr = original
+  end
+
+end

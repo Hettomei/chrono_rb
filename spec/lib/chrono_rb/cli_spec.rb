@@ -6,6 +6,13 @@ describe ChronoRb::CLI do
     context "first start" do
       let(:group){ DateTime.now.strftime("%Y-%m-%d") }
 
+      it "load conf" do
+        silence_stdout do
+          expect(ChronoRb::Conf).to receive(:load)
+          ChronoRb::CLI.start(%w(start))
+        end
+      end
+
       it "display init" do
         expect{
           ChronoRb::CLI.start(%w(start))
@@ -26,6 +33,14 @@ describe ChronoRb::CLI do
   end
 
   describe "#stop" do
+
+    it "load conf" do
+      silence_sterr do
+        expect(ChronoRb::Conf).to receive(:load)
+        ChronoRb::CLI.start(%w(stop))
+      end
+    end
+
     context "never started" do
       let(:group){ DateTime.now.strftime("%Y-%m-%d") }
 
