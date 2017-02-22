@@ -2,26 +2,40 @@
 
 To experiment with that code, run `bin/console` for an interactive prompt.
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'chrono_rb'
+then
+```
+ChronoRb::CLI.start(%w(start))
 ```
 
-And then execute:
+or
 
-    $ bundle
+```
+bin/chrono_rb start
+```
 
-Or install it yourself as:
+## Installation
+
+install it with:
 
     $ gem install chrono_rb
+    $ chrono_rb
+
+For developper:
+
+```bash
+gem build chrono_rb.gemspec
+gem install chrono_rb-0.1.0.gem
+chrono_rb
+# display help
+
+# uninstall
+gem uninstall chrono_rb
+```
 
 ## Usage
 
 ```
-ruby -Ilib ./exe/chrono_rb
+./bin/chrono_rb
 ```
 
 ## Tests
