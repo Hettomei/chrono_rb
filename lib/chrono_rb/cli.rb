@@ -1,6 +1,7 @@
 require 'thor'
 require 'chrono_rb/conf'
 require 'chrono_rb/start'
+require 'chrono_rb/delete'
 
 module ChronoRb
   class CLI < Thor
@@ -12,6 +13,17 @@ module ChronoRb
       puts "Starting chrono for group #{conf.group}"
       puts "all:"
       start.entries.each do |entry|
+        puts entry
+      end
+    end
+
+    desc "del", "delete the last entry"
+    def del
+      del = Delete.new(config: conf)
+      del.del
+      puts "deleting last entry #{del.del} for group #{conf.group}"
+      puts "all:"
+      del.entries.each do |entry|
         puts entry
       end
     end

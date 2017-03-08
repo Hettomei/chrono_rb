@@ -14,6 +14,13 @@ module ChronoRb
       end
     end
 
+    def del_last_from_array(group:)
+      @pstore.transaction do
+        @pstore[group] ||= []
+        @pstore[group].pop
+      end
+    end
+
     def fetch(key, default)
       @pstore.transaction do
         @pstore.fetch(key, default)
