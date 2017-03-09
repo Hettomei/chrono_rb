@@ -10,6 +10,10 @@ module ChronoRb
       @group ||= store.fetch(:current_group, default_group)
     end
 
+    def set_group(group)
+      @group = group
+    end
+
     def store
       @store ||= Store.new(PStore.new(File.join(path, 'config.pstore')))
     end
