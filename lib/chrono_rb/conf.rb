@@ -7,7 +7,11 @@ module ChronoRb
   class Conf
 
     def group
-      @group ||= store.fetch(:current_group, default_group)
+      @group ||= store.fetch(group_name, default_group)
+    end
+
+    def group_name
+      :current_group
     end
 
     def set_group(group)

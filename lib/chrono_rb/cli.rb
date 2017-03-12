@@ -1,7 +1,9 @@
 require 'thor'
 require 'chrono_rb/conf'
-require 'chrono_rb/start'
 require 'chrono_rb/delete'
+require 'chrono_rb/entries'
+require 'chrono_rb/start'
+require 'chrono_rb/stop'
 
 module ChronoRb
   class CLI < Thor
@@ -13,10 +15,7 @@ module ChronoRb
       start = Start.new(config: conf)
       start.start
       puts "Starting chrono for group #{conf.group}"
-      puts "all:"
-      start.entries.each do |entry|
-        puts entry
-      end
+      display_group
     end
 
     desc "del", "delete the last entry"
@@ -26,28 +25,35 @@ module ChronoRb
       del = Delete.new(config: conf)
       del.del
       puts "deleting last entry #{del.del} for group #{conf.group}"
-      puts "all:"
-      del.entries.each do |entry|
-        puts entry
-      end
+      display_group
     end
 
     desc "roots", "all groups"
     def roots
       conf.store.roots.each do |entry|
+        next if entry == conf.group_name.to_s
         puts entry
       end
     end
 
     desc "stop", "Stop chrono. Must be started"
+    option :group, aliases: [:g]
     def stop
-      group = DateTime.now.strftime("%Y-%m-%d")
-      ChronoRb.exit_with_error("Error chrono must be started for group #{group}")
+      conf.set_group(options[:group]) if options[:group]
+      stop = Stop.new(config: conf)
+      stop.stop
+      puts "Stoping chrono for group #{conf.group}"
+      display_group
     end
 
     no_commands do
       def conf
         @conf ||= Conf.new
+      end
+
+      def display_group
+        puts "all:"
+        Entries.new(config: conf).display
       end
     end
 
