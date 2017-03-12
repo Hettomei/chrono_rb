@@ -46,6 +46,14 @@ module ChronoRb
       display_group
     end
 
+    desc "show", "Show chrono."
+    option :group, aliases: [:g]
+    def show
+      conf.set_group(options[:group]) if options[:group]
+      puts "Showing chrono for group #{conf.group}"
+      display_group
+    end
+
     no_commands do
       def conf
         @conf ||= Conf.new
