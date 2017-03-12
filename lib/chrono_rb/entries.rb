@@ -1,5 +1,3 @@
-require 'pp'
-
 module ChronoRb
   class Entries
 
@@ -8,13 +6,17 @@ module ChronoRb
     end
 
     def display
+      total = 0
       store.fetch(@config.group, []).each do |array|
         if array.length == 1
           puts format(array.first)
         else
+          total += array[2]
           puts "#{format(array.first)} -> #{format(array[1])} : #{format_sec_to_duration(array[2])}"
         end
       end
+
+      puts "Total : #{format_sec_to_duration(total)}"
     end
 
     def format(date)
