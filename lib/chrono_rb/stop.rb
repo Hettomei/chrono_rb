@@ -14,7 +14,8 @@ module ChronoRb
 
       new_date = aa || DateTime.now
       entry = [last.first, new_date]
-      store.replace_last_with(group: @config.group, entry: entry)
+      store.del_last_from_array(group: @config.group)
+      store.add(group: @config.group, entry: entry)
     end
 
     def store

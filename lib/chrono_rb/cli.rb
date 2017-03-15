@@ -64,9 +64,7 @@ module ChronoRb
     def groups
       biggest = 0
       array = []
-      conf.store.roots.sort.map do |group|
-        next if group == conf.group_name.to_s
-
+      conf.store.groups.sort.map do |group|
         entries_count = conf.store.fetch(group, []).count
 
         biggest = group.size if group.size > biggest

@@ -28,27 +28,15 @@ module ChronoRb
       end
     end
 
-    def replace_last_with(group:, entry:)
-      @pstore.transaction do
-        @pstore[group] ||= []
-
-        newstate = @pstore[group]
-        newstate.pop
-        newstate.concat([entry])
-
-        @pstore[group] = newstate
-      end
-    end
-
     def fetch(key, default)
       @pstore.transaction do
         @pstore.fetch(key, default)
       end
     end
 
-    def roots
+    def groups
       @pstore.transaction do
-        @pstore.roots
+        @pstore.roots.select { |key| key != 'current_group'}
       end
     end
 
