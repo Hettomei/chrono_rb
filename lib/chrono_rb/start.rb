@@ -7,7 +7,7 @@ module ChronoRb
       @config = config
     end
 
-    def start(entry = nil)
+    def call(entry = nil)
       last = store.last(group: @config.group)
       raise "Cannot start if ongoing" if last && last.size == 1
 

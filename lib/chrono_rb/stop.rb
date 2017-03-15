@@ -1,3 +1,5 @@
+require 'date'
+
 module ChronoRb
   class Stop
 
@@ -5,7 +7,7 @@ module ChronoRb
       @config = config
     end
 
-    def stop(aa = nil)
+    def call(aa = nil)
       last = store.last(group: @config.group)
       raise "Cannot stop if not start" unless last
       raise "Cannot stop if already stopped" if last.size > 1

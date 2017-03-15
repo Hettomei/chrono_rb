@@ -18,7 +18,7 @@ module ChronoRb
     def auto
       conf.set_group(options[:group]) if options[:group]
       auto = Auto.new(config: conf)
-      if auto.auto == 'start'
+      if auto.call == 'start'
         invoke :start
       else
         invoke :stop
@@ -29,8 +29,7 @@ module ChronoRb
     option :group, aliases: [:g]
     def start
       conf.set_group(options[:group]) if options[:group]
-      start = Start.new(config: conf)
-      start.start
+      Start.new(config: conf).call
       puts "Starting chrono for group #{conf.group}"
       display_group
     end
@@ -39,8 +38,7 @@ module ChronoRb
     option :group, aliases: [:g]
     def stop
       conf.set_group(options[:group]) if options[:group]
-      stop = Stop.new(config: conf)
-      stop.stop
+      Stop.new(config: conf).call
       puts "Stoping chrono for group #{conf.group}"
       display_group
     end
@@ -49,9 +47,8 @@ module ChronoRb
     option :group, aliases: [:g]
     def del
       conf.set_group(options[:group]) if options[:group]
-      del = Delete.new(config: conf)
-      del.del
-      puts "Deleting last entry #{del.del} for group #{conf.group}"
+      entry = Delete.new(config: conf).call
+      puts "Deleting last entry #{entry} for group #{conf.group}"
       display_group
     end
 
@@ -59,7 +56,7 @@ module ChronoRb
     option :group, aliases: [:g]
     def show
       conf.set_group(options[:group]) if options[:group]
-      puts "Group #{conf.group}"
+      puts "#{conf.group}:"
       display_group
     end
 

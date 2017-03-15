@@ -5,7 +5,7 @@ module ChronoRb
       @config = config
     end
 
-    def auto(entry = nil)
+    def call
       last = store.last(group: @config.group)
       if last.nil? || last.size > 1
         'start'

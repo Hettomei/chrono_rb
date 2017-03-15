@@ -1,5 +1,3 @@
-require 'date'
-
 module ChronoRb
   class Delete
 
@@ -7,7 +5,7 @@ module ChronoRb
       @config = config
     end
 
-    def del
+    def call
       @del ||= store.del_last_from_array(group: @config.group)
     end
 
