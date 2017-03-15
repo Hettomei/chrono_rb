@@ -11,8 +11,7 @@ module ChronoRb
       raise "Cannot stop if already stopped" if last.size > 1
 
       new_date = aa || DateTime.now
-      diff_in_seconds = new_date.to_time - last.first.to_time
-      entry = [last.first, new_date, diff_in_seconds]
+      entry = [last.first, new_date]
       store.replace_last_with(group: @config.group, entry: entry)
     end
 

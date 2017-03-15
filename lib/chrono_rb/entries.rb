@@ -1,6 +1,8 @@
 module ChronoRb
   class Entries
 
+    ONE_DAY_IN_SEC = 3600 * 24
+
     def initialize(config:)
       @config = config
     end
@@ -11,12 +13,13 @@ module ChronoRb
         if array.length == 1
           puts format(array.first)
         else
-          total += array[2]
-          puts "#{format(array.first)} -> #{format(array[1])} : #{format_sec_to_duration(array[2])}"
+          diff_in_seconds = array[1].to_time - array[0].to_time
+          total += diff_in_seconds
+          puts "#{format(array[0])} -> #{format(array[1])} : #{format_sec_to_duration(diff_in_seconds)}"
         end
       end
 
-      puts "Total : #{format_sec_to_duration(total)}"
+      puts "Total: #{format_sec_to_duration(total)}"
     end
 
     def format(date)
@@ -24,14 +27,16 @@ module ChronoRb
     end
 
     def format_sec_to_duration(sec)
+      str = ''
 
-      if sec >= 3600*24
-        time = Time.at(sec % (3600 * 24)).utc.strftime('%T')
-        d = sec.round / (3600 * 24)
-        "#{d} days #{time}"
+      if sec > ONE_DAY_IN_SEC - 1
+        days = sec.round / ONE_DAY_IN_SEC
+        str = "#{days} days %T"
       else
-        Time.at(sec).utc.strftime('%T')
+        str = '%T'
       end
+
+      Time.at(sec % ONE_DAY_IN_SEC).utc.strftime(str)
     end
 
     def store
