@@ -2,12 +2,28 @@ require 'thor'
 require 'chrono_rb/conf'
 require 'chrono_rb/delete'
 require 'chrono_rb/entries'
+require 'chrono_rb/auto'
 require 'chrono_rb/start'
 require 'chrono_rb/stop'
 
 module ChronoRb
   class CLI < Thor
+
+    default_task :auto
+
     GROUP_DESC="[--group=GROUP]"
+
+    desc "auto #{GROUP_DESC}", "Start or Stop chrono. This is the default task"
+    option :group, aliases: [:g]
+    def auto
+      conf.set_group(options[:group]) if options[:group]
+      auto = Auto.new(config: conf)
+      if auto.auto == 'start'
+        invoke :start
+      else
+        invoke :stop
+      end
+    end
 
     desc "start #{GROUP_DESC}", "Start chrono. Must be stopped."
     option :group, aliases: [:g]

@@ -9,6 +9,7 @@ module ChronoRb
 
     def display
       total = 0
+
       store.fetch(@config.group, []).each do |array|
         if array.length == 1
           puts format(array.first)
