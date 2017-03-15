@@ -54,6 +54,39 @@ module ChronoRb
       display_group
     end
 
+    desc "test", "test chrono"
+    def test
+      conf.set_group('test-01')
+      start = Start.new(config: conf)
+      stop = Stop.new(config: conf)
+      start.start(DateTime.new(2017,3,13,9))
+      stop.stop(DateTime.new(2017,3,13,12,30))
+      start.start(DateTime.new(2017,3,13,13,30))
+      stop.stop(DateTime.new(2017,3,13,17,30))
+
+      start.start(DateTime.new(2017,3,14,9))
+      stop.stop(DateTime.new(2017,3,14,12,30))
+      start.start(DateTime.new(2017,3,14,13,30))
+      stop.stop(DateTime.new(2017,3,14,17,30))
+
+      start.start(DateTime.new(2017,3,15,9))
+      stop.stop(DateTime.new(2017,3,15,12,30))
+      start.start(DateTime.new(2017,3,15,13,30))
+      stop.stop(DateTime.new(2017,3,15,17,30))
+
+      start.start(DateTime.new(2017,3,16,9))
+      stop.stop(DateTime.new(2017,3,16,12,30))
+      start.start(DateTime.new(2017,3,16,13,30))
+      stop.stop(DateTime.new(2017,3,16,17,30))
+
+      start.start(DateTime.new(2017,3,17,9))
+      stop.stop(DateTime.new(2017,3,17,12,30))
+      start.start(DateTime.new(2017,3,17,13,30))
+      stop.stop(DateTime.new(2017,3,17,17,30))
+      puts "Starting chrono for group #{conf.group}"
+      display_group
+    end
+
     no_commands do
       def conf
         @conf ||= Conf.new

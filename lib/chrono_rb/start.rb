@@ -7,11 +7,11 @@ module ChronoRb
       @config = config
     end
 
-    def start
+    def start(entry = nil)
       last = store.last(group: @config.group)
       raise "Cannot start if ongoing" if last && last.size == 1
 
-      store.add(group: @config.group, entry: [DateTime.now])
+      store.add(group: @config.group, entry: [entry || DateTime.now])
     end
 
     def store
