@@ -65,10 +65,20 @@ module ChronoRb
 
     desc "groups", "Display all existing groups."
     def groups
-      conf.store.roots.map do |entry|
-        next if entry == conf.group_name.to_s
-        size = conf.store.fetch(entry, []).count
-        puts "name: #{entry} size: #{size}"
+      biggest = 0
+      array = []
+      conf.store.roots.sort.map do |group|
+        next if group == conf.group_name.to_s
+
+        entries_count = conf.store.fetch(group, []).count
+
+        biggest = group.size if group.size > biggest
+
+        array << [group, entries_count]
+      end
+
+      array.each do |name, size|
+        puts "#{name.ljust(biggest)} : #{size}"
       end
     end
 
