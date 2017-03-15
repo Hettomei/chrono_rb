@@ -6,8 +6,10 @@ require 'chrono_rb/store'
 module ChronoRb
   class Conf
 
+    KEY_GROUPS = 'current_group'
+
     def group
-      @group ||= store.fetch('current_group', default_group)
+      @group ||= store.fetch(KEY_GROUPS, default_group)
     end
 
     def set_group(group)

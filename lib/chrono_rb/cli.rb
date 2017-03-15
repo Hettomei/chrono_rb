@@ -1,8 +1,9 @@
 require 'thor'
+require 'chrono_rb/auto'
 require 'chrono_rb/conf'
 require 'chrono_rb/delete'
 require 'chrono_rb/entries'
-require 'chrono_rb/auto'
+require 'chrono_rb/groups'
 require 'chrono_rb/start'
 require 'chrono_rb/stop'
 
@@ -60,21 +61,24 @@ module ChronoRb
       display_group
     end
 
+    desc "group [--set=GROUP|--unset]", "Set/unset permanent group. Will take this group if no --group added."
+    option :set, aliases: [:s]
+    option :unset, aliases: [:u], :type => :boolean
+    def group
+      if options[:set]
+        puts "group set to <#{options[:set]}>"
+        conf.store.set_group(options[:set])
+      elsif options[:unset]
+        puts "group was <#{conf.group}>"
+        conf.store.unset_group
+      else
+        puts "group is <#{conf.group}>"
+      end
+    end
+
     desc "groups", "Display all existing groups."
     def groups
-      biggest = 0
-      array = []
-      conf.store.groups.sort.map do |group|
-        entries_count = conf.store.fetch(group, []).count
-
-        biggest = group.size if group.size > biggest
-
-        array << [group, entries_count]
-      end
-
-      array.each do |name, size|
-        puts "#{name.ljust(biggest)} : #{size}"
-      end
+      Groups.new(config: conf).call
     end
 
     no_commands do

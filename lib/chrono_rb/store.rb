@@ -1,10 +1,23 @@
 require 'date'
+require 'chrono_rb/conf'
 
 module ChronoRb
   class Store
 
     def initialize(pstore)
       @pstore = pstore
+    end
+
+    def set_group(name)
+      @pstore.transaction do
+        @pstore[Conf::KEY_GROUPS] = name
+      end
+    end
+
+    def unset_group
+      @pstore.transaction do
+        @pstore.delete(Conf::KEY_GROUPS)
+      end
     end
 
     def add(group:, entry:)
@@ -29,14 +42,14 @@ module ChronoRb
     end
 
     def fetch(key, default)
-      @pstore.transaction do
+      @pstore.transaction(true) do
         @pstore.fetch(key, default)
       end
     end
 
     def groups
-      @pstore.transaction do
-        @pstore.roots.select { |key| key != 'current_group'}
+      @pstore.transaction(true) do
+        @pstore.roots.select { |key| key != Conf::KEY_GROUPS}
       end
     end
 
