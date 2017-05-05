@@ -1,4 +1,5 @@
 require 'thor'
+require 'chrono_rb/add'
 require 'chrono_rb/auto'
 require 'chrono_rb/conf'
 require 'chrono_rb/delete'
@@ -41,6 +42,23 @@ module ChronoRb
       conf.set_group(options[:group]) if options[:group]
       Stop.new(config: conf).call
       puts "Stoping chrono for group #{conf.group}"
+      display_group
+    end
+
+    desc "add #{GROUP_DESC}", "Add by hand. Format is 2017-05-05 13:24:33"
+    option :group, aliases: [:g]
+    def add(*params)
+      conf.set_group(options[:group]) if options[:group]
+      str_datetime = params.join(' ')
+      add = Add.new(config: conf, str_datetime: str_datetime)
+      puts "Add chrono #{str_datetime} for group #{conf.group}"
+      if add.call
+        # ok
+      else
+        puts
+        puts "Cannot parse #{str_datetime} with #{Add::REGEX}"
+        puts
+      end
       display_group
     end
 
