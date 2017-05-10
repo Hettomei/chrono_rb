@@ -3,7 +3,7 @@ require 'date'
 module ChronoRb
   class Add
 
-    REGEX = '%Y-%m-%d %H:%M:%S'
+    REGEX = '%Y-%m-%d %H:%M:%S %z'
 
     def initialize(config:, str_datetime:)
       @config = config
@@ -31,9 +31,17 @@ module ChronoRb
     end
 
     def datetime
-      @datetime ||= DateTime.strptime(@str_datetime, REGEX)
+      @datetime ||= DateTime.strptime(str_datetime_with_timezone, REGEX)
     rescue
       false
+    end
+
+    def str_datetime_with_timezone
+      "#{@str_datetime} #{DateTime.now.zone}"
+    end
+
+    def get_error
+      "Cannot parse #{str_datetime_with_timezone} with #{REGEX}"
     end
 
   end

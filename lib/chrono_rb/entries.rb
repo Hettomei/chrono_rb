@@ -24,7 +24,7 @@ module ChronoRb
     end
 
     def format(date)
-      date.strftime("%Y-%m-%d %T")
+      date.strftime("%Y-%m-%d %T %z")
     end
 
     def format_sec_to_duration(sec)

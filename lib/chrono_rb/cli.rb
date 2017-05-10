@@ -52,11 +52,9 @@ module ChronoRb
       str_datetime = params.join(' ')
       add = Add.new(config: conf, str_datetime: str_datetime)
       puts "Add chrono #{str_datetime} for group #{conf.group}"
-      if add.call
-        # ok
-      else
+      if !add.call
         puts
-        puts "Cannot parse #{str_datetime} with #{Add::REGEX}"
+        puts add.get_error
         puts
       end
       display_group
