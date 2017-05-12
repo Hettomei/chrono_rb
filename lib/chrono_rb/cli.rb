@@ -77,6 +77,14 @@ module ChronoRb
       display_group
     end
 
+    desc "now #{GROUP_DESC}", "Show all chrono with a now time (not saved)"
+    option :group, aliases: [:g]
+    def now
+      conf.set_group(options[:group]) if options[:group]
+      puts "#{conf.group}:"
+      Entries.new(config: conf).display_with_now
+    end
+
     desc "group [--set=GROUP|--unset]", "Set/unset permanent group. Will take this group if no --group added."
     option :set, aliases: [:s]
     option :unset, aliases: [:u], :type => :boolean

@@ -1,3 +1,5 @@
+require 'date'
+
 module ChronoRb
   class Entries
 
@@ -8,9 +10,13 @@ module ChronoRb
     end
 
     def display
+      display_entries(store.fetch(@config.group, []))
+    end
+
+    def display_entries(entries)
       total = 0
 
-      store.fetch(@config.group, []).each do |array|
+      entries.each do |array|
         if array.length == 1
           puts format(array.first)
         else
@@ -21,6 +27,16 @@ module ChronoRb
       end
 
       puts "Total: #{format_sec_to_duration(total)}"
+    end
+
+    def display_with_now
+      a = store.fetch(@config.group, [])
+      if a.last && a.last.length == 1
+        a.last.concat([DateTime.now])
+      else
+        puts 'nothing to add'
+      end
+      display_entries(a)
     end
 
     def format(date)
