@@ -15,7 +15,13 @@ module ChronoRb
 
     desc "start_stop #{GROUP_DESC}", "Start or Stop chrono. This is the default task"
     option :group, aliases: [:g]
+    option :version, aliases: [:v]
     def start_stop
+      if options[:version]
+        puts VERSION
+        return
+      end
+
       conf.set_group(options[:group]) if options[:group]
       StartStop.new(config: conf).call
       puts "Starting chrono for group #{conf.group}"
