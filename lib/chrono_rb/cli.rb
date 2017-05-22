@@ -46,16 +46,18 @@ module ChronoRb
       display_group
     end
 
-    desc "show #{GROUP_DESC} [--now]", "Show all chrono. if --now, compare against now and do not save this one"
+    desc "show #{GROUP_DESC} [--now] [--all-groups]", "Show all chrono. if --now, compare against now and do not save this one"
     option :group, aliases: [:g]
     option :now, aliases: [:n], :type => :boolean
+    option 'all-groups', aliases: [:a], :type => :boolean
     def show
-      conf.set_group(options[:group]) if options[:group]
-      puts "#{conf.group}:"
-      if options[:now]
-        Entries.new(config: conf).display_with_now
+      if options['all-groups']
+        Groups.new(config: conf).all.each do |group|
+          show_group(group, options[:now])
+          puts '------'
+        end
       else
-        display_group
+        show_group(options[:group], options[:now])
       end
     end
 
@@ -86,6 +88,16 @@ module ChronoRb
 
       def display_group
         Entries.new(config: conf).display
+      end
+
+      def show_group(group, now)
+        conf.set_group(group) if group
+        puts "#{conf.group}:"
+        if now
+          Entries.new(config: conf).display_with_now
+        else
+          display_group
+        end
       end
     end
 

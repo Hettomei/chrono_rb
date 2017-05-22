@@ -5,11 +5,15 @@ module ChronoRb
       @config = config
     end
 
+    def all
+      store.groups.sort
+    end
+
     def call
       biggest = 0
       array = []
 
-      store.groups.sort.map do |group|
+      all.map do |group|
         biggest = group.size if group.size > biggest
         entries_count = store.fetch(group, []).count
 
