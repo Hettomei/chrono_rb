@@ -30,15 +30,7 @@ module ChronoRb
     end
 
     def display_with_now
-      date_times = store.fetch(@config.group, [])
-
-      if date_times.length % 2 == 1
-        date_times.concat([DateTime.now])
-      else
-        puts 'nothing to add'
-      end
-
-      display_entries(date_times)
+      display_entries(store.fetch(@config.group, []).concat([DateTime.now]))
     end
 
     def format_date_time(date)
