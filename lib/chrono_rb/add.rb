@@ -17,13 +17,7 @@ module ChronoRb
     end
 
     def run
-      klass = if Auto.new(config: @config).call == 'start'
-                Start
-              else
-                Stop
-              end
-
-      klass.new(config: @config).call(datetime)
+      StartStop.new(config: @config).call(datetime)
     end
 
     def error

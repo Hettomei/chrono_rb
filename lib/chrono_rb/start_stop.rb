@@ -1,7 +1,7 @@
 require 'date'
 
 module ChronoRb
-  class Simple
+  class StartStop
 
     def initialize(config:)
       @config = config

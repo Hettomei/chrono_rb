@@ -16,34 +16,36 @@ module ChronoRb
     def display_entries(entries)
       total = 0
 
-      entries.each_slice(2) do |time1, time2|
-        if time1 && time2
-          diff_in_seconds = time2.to_time - time1.to_time
+      entries.each_slice(2) do |date_time1, date_time2|
+        if date_time1 && date_time2
+          diff_in_seconds = date_time2.to_time - date_time1.to_time
           total += diff_in_seconds
-          puts "#{format(time1)} -> #{format(time2)} : #{format_sec_to_duration(diff_in_seconds)}"
+          puts "#{format_date_time(date_time1)} -> #{format_date_time(date_time2)} : #{format_duration(diff_in_seconds)}"
         else
-          puts format(time1)
+          puts format_date_time(date_time1)
         end
       end
 
-      puts "Total: #{format_sec_to_duration(total)}"
+      puts "Total: #{format_duration(total)}"
     end
 
     def display_with_now
-      a = store.fetch(@config.group, [])
-      if a.last && a.last.length == 1
-        a.last.concat([DateTime.now])
+      date_times = store.fetch(@config.group, [])
+
+      if date_times.length % 2 == 1
+        date_times.concat([DateTime.now])
       else
         puts 'nothing to add'
       end
-      display_entries(a)
+
+      display_entries(date_times)
     end
 
-    def format(date)
+    def format_date_time(date)
       date.strftime("%Y-%m-%d %T %z")
     end
 
-    def format_sec_to_duration(sec)
+    def format_duration(sec)
       str = ''
 
       if sec > ONE_DAY_IN_SEC - 1

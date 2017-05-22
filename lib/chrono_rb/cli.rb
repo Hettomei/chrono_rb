@@ -1,57 +1,24 @@
 require 'thor'
 require 'chrono_rb/add'
-require 'chrono_rb/auto'
 require 'chrono_rb/conf'
 require 'chrono_rb/delete'
 require 'chrono_rb/entries'
 require 'chrono_rb/groups'
-require 'chrono_rb/start'
-require 'chrono_rb/simple'
-require 'chrono_rb/stop'
+require 'chrono_rb/start_stop'
 
 module ChronoRb
   class CLI < Thor
 
-    default_task :auto
+    default_task :start_stop
 
     GROUP_DESC="[--group=GROUP]"
 
-    desc "auto #{GROUP_DESC}", "Start or Stop chrono. This is the default task"
+    desc "start_stop #{GROUP_DESC}", "Start or Stop chrono. This is the default task"
     option :group, aliases: [:g]
-    def auto
+    def start_stop
       conf.set_group(options[:group]) if options[:group]
-      auto = Auto.new(config: conf)
-      if auto.call == 'start'
-        invoke :start
-      else
-        invoke :stop
-      end
-    end
-
-    desc "simple #{GROUP_DESC}", "Start or Stop chrono. This is the default task"
-    option :group, aliases: [:g]
-    def simple
-      conf.set_group(options[:group]) if options[:group]
-      Simple.new(config: conf).call
+      StartStop.new(config: conf).call
       puts "Starting chrono for group #{conf.group}"
-      display_group
-    end
-
-    desc "start #{GROUP_DESC}", "Start chrono. Must be stopped."
-    option :group, aliases: [:g]
-    def start
-      conf.set_group(options[:group]) if options[:group]
-      Start.new(config: conf).call
-      puts "Starting chrono for group #{conf.group}"
-      display_group
-    end
-
-    desc "stop #{GROUP_DESC}", "Stop chrono. Must be started."
-    option :group, aliases: [:g]
-    def stop
-      conf.set_group(options[:group]) if options[:group]
-      Stop.new(config: conf).call
-      puts "Stoping chrono for group #{conf.group}"
       display_group
     end
 
