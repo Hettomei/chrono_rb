@@ -16,13 +16,13 @@ module ChronoRb
     def display_entries(entries)
       total = 0
 
-      entries.each do |array|
-        if array.length == 1
-          puts format(array.first)
-        else
-          diff_in_seconds = array[1].to_time - array[0].to_time
+      entries.each_slice(2) do |time1, time2|
+        if time1 && time2
+          diff_in_seconds = time2.to_time - time1.to_time
           total += diff_in_seconds
-          puts "#{format(array[0])} -> #{format(array[1])} : #{format_sec_to_duration(diff_in_seconds)}"
+          puts "#{format(time1)} -> #{format(time2)} : #{format_sec_to_duration(diff_in_seconds)}"
+        else
+          puts format(time1)
         end
       end
 

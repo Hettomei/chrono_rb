@@ -6,6 +6,7 @@ require 'chrono_rb/delete'
 require 'chrono_rb/entries'
 require 'chrono_rb/groups'
 require 'chrono_rb/start'
+require 'chrono_rb/simple'
 require 'chrono_rb/stop'
 
 module ChronoRb
@@ -25,6 +26,15 @@ module ChronoRb
       else
         invoke :stop
       end
+    end
+
+    desc "simple #{GROUP_DESC}", "Start or Stop chrono. This is the default task"
+    option :group, aliases: [:g]
+    def simple
+      conf.set_group(options[:group]) if options[:group]
+      Simple.new(config: conf).call
+      puts "Starting chrono for group #{conf.group}"
+      display_group
     end
 
     desc "start #{GROUP_DESC}", "Start chrono. Must be stopped."
