@@ -34,13 +34,6 @@ module ChronoRb
       end
     end
 
-    def last(group:)
-      @pstore.transaction do
-        @pstore[group] ||= []
-        @pstore[group].last
-      end
-    end
-
     def fetch(key, default)
       @pstore.transaction(true) do
         @pstore.fetch(key, default)
