@@ -46,20 +46,17 @@ module ChronoRb
       display_group
     end
 
-    desc "show #{GROUP_DESC}", "Show all chrono."
+    desc "show #{GROUP_DESC} [--now]", "Show all chrono. if --now, compare against now and do not save this one"
     option :group, aliases: [:g]
+    option :now, aliases: [:n], :type => :boolean
     def show
       conf.set_group(options[:group]) if options[:group]
       puts "#{conf.group}:"
-      display_group
-    end
-
-    desc "now #{GROUP_DESC}", "Show all chrono with a now time (not saved)"
-    option :group, aliases: [:g]
-    def now
-      conf.set_group(options[:group]) if options[:group]
-      puts "#{conf.group}:"
-      Entries.new(config: conf).display_with_now
+      if options[:now]
+        Entries.new(config: conf).display_with_now
+      else
+        display_group
+      end
     end
 
     desc "group [--set=GROUP|--unset]", "Set/unset permanent group. Will take this group if no --group added."
