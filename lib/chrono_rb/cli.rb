@@ -1,5 +1,6 @@
 require 'thor'
 require 'chrono_rb/add'
+require 'chrono_rb/edit'
 require 'chrono_rb/conf'
 require 'chrono_rb/delete'
 require 'chrono_rb/entries'
@@ -65,6 +66,15 @@ module ChronoRb
       else
         show_group(options[:group], options[:now])
       end
+    end
+
+    desc "edit #{GROUP_DESC}", "edit the last time by adding seconds. seconds can be positive or negative"
+    option :group, aliases: [:g]
+    def edit(seconds)
+      conf.set_group(options[:group]) if options[:group]
+      entry = Edit.new(config: conf, seconds: Integer(seconds)).call
+      puts "Editing last entry #{entry} for group #{conf.group} to add #{Integer(seconds)}"
+      display_group
     end
 
     desc "group [--set=GROUP|--unset]", "Set/unset permanent group. Will take this group if no --group added."
