@@ -20,13 +20,11 @@ module ChronoRb
         if date_time1 && date_time2
           diff_in_seconds = date_time2.to_time - date_time1.to_time
           total += diff_in_seconds
-          puts "#{format_date_time(date_time1)} -> #{format_date_time(date_time2)} : #{format_duration(diff_in_seconds)}"
+          puts "#{format_date_time(date_time1)} -> #{format_date_time(date_time2)} : #{format_duration(diff_in_seconds)} | sum: #{format_duration(total)}"
         else
           puts format_date_time(date_time1)
         end
       end
-
-      puts "Total: #{format_duration(total)}"
     end
 
     def display_with_now
@@ -38,16 +36,15 @@ module ChronoRb
     end
 
     def format_duration(sec)
-      str = ''
+      round_sec = sec.round
 
-      if sec > ONE_DAY_IN_SEC - 1
-        days = sec.round / ONE_DAY_IN_SEC
-        str = "#{days} days %T"
-      else
-        str = '%T'
-      end
+      hour = round_sec / 3600
+      rest_sec = round_sec % 3600
 
-      Time.at(sec % ONE_DAY_IN_SEC).utc.strftime(str)
+      min = rest_sec / 60
+      rest_sec = rest_sec % 60
+
+      "#{'%02d' % hour}:#{'%02d' % min}:#{'%02d' % rest_sec}"
     end
 
     def store
