@@ -72,8 +72,9 @@ module ChronoRb
     option :group, aliases: [:g]
     def edit(seconds)
       conf.set_group(options[:group]) if options[:group]
-      entry = Edit.new(config: conf, seconds: Integer(seconds)).call
-      puts "Editing last entry #{entry} for group #{conf.group} to add #{Integer(seconds)}"
+      edit = Edit.new(config: conf, seconds: Integer(seconds))
+      edit.call
+      puts "Editing last entry #{edit.last_entry} for group #{conf.group} to add #{Integer(seconds)} seconds then becomes #{edit.new_entry}"
       display_group
     end
 
